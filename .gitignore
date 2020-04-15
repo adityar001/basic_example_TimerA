@@ -1,2 +1,4 @@
-*\Debug
-*\.launches
+basic_example_TimerA_PWM/Debug
+basic_example_TimerA_PWM/.launches
+basic_example_TimerA_RGB/Debug
+basic_example_TimerA_RGB/.launches
