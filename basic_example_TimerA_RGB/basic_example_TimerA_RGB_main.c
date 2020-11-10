@@ -13,7 +13,7 @@ void initialize();
 #define PWM_PERIOD_CYLCLES ONE_MILLISEC_COUNT
 
 // Duty cycle as a fraction (between 0 and 1)
-#define DUTY_CYCLE_FRACTION 0.001
+#define DUTY_CYCLE_FRACTION 0.01
 
 // The number of on cycles (Timer_A counter cycles)
 #define BLUE_ON_CYCLES (DUTY_CYCLE_FRACTION * PWM_PERIOD_CYLCLES)
@@ -40,7 +40,7 @@ void initPWM()
 {
     // For the Blue LED, we first configure it as a GPIO and turn it off
     // Then, we configure it to work as output channel of a timer
-    // The blue LED on booster is wried to Port 5, Pin 6, we cannot change this as the programmer
+    // The blue LED on booster is wired to Port 5, Pin 6, we cannot change this as the programmer
     // BLUE LED
     GPIO_setAsOutputPin    (GPIO_PORT_P5,    GPIO_PIN6);
     GPIO_setOutputLowOnPin (GPIO_PORT_P5,    GPIO_PIN6);
