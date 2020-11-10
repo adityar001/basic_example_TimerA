@@ -131,9 +131,12 @@ void initialize();
 //The number of counter cycles during 1s based on a source clock of 3MHz and the divider of 64
 #define ONE_SEC_COUNT  46875
 
+#define ONE_TENTH_SEC_COUNT  4687
+
+#define ONE_HUNDREDTH_SEC_COUNT  469
 
 // This is based on a 3MHz source clock and a clock divider of 64
-#define PWM_PERIOD_CYLCLES ONE_SEC_COUNT
+#define PWM_PERIOD_CYLCLES ONE_HUNDREDTH_SEC_COUNT
 
 // Duty cycle as a fraction (between 0 and 1)
 #define DUTY_CYCLE_FRACTION 0.5
@@ -178,14 +181,14 @@ int main(void) {
 
   // Stop WDT
   WDT_A_holdTimer();
-  Timer_A_PWMConfig pwmConfig_blu = {
-          TIMER_A_CLOCKSOURCE_SMCLK,      // The source clock is the system clock (3MHz)
-          TIMER_A_CLOCKSOURCE_DIVIDER_64, // The clock divider is 64
-          PWM_PERIOD_CYLCLES,             // The # of counter cycles in one PWM round (period of PWM in terms of counter cycle)
-          BLU_CHANNEL,                    // The output register used for OC operation. The programmer does not choose this.
-          TIMER_A_OUTPUTMODE_SET_RESET,   // The OC mode. We choose this such that we can achieve the waveform we are interested in.
-          BLU_COMPARE_CYCLES              // The OC value. This is the value that when the counter hits it, something happens to the waveform
-  };
+  Timer_A_PWMConfig pwmConfig_blu;
+  pwmConfig_blu.clockSource = TIMER_A_CLOCKSOURCE_SMCLK; // The source clock is the system clock (3MHz)
+  pwmConfig_blu.clockSourceDivider = TIMER_A_CLOCKSOURCE_DIVIDER_64;  // The clock divider is 64
+  pwmConfig_blu.compareOutputMode = TIMER_A_OUTPUTMODE_SET_RESET; // The OC mode. We choose this such that we can achieve the waveform we are interested in.
+  pwmConfig_blu.compareRegister = BLU_CHANNEL; // The output register used for OC operation. The programmer does not choose this.
+  pwmConfig_blu.timerPeriod = PWM_PERIOD_CYLCLES; // The # of counter cycles in one PWM round (period of PWM in terms of counter cycle)
+  pwmConfig_blu.dutyCycle = BLU_COMPARE_CYCLES; // The OC value. This is the value that when the counter hits it, something happens to the waveform
+
   initPWM();
 
   // The below line starts generating the pulse
