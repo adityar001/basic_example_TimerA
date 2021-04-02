@@ -181,13 +181,30 @@ int main(void) {
 
   // Stop WDT
   WDT_A_holdTimer();
+
+
   Timer_A_PWMConfig pwmConfig_blu;
-  pwmConfig_blu.clockSource = TIMER_A_CLOCKSOURCE_SMCLK; // The source clock is the system clock (3MHz)
-  pwmConfig_blu.clockSourceDivider = TIMER_A_CLOCKSOURCE_DIVIDER_64;  // The clock divider is 64
-  pwmConfig_blu.compareOutputMode = TIMER_A_OUTPUTMODE_SET_RESET; // The OC mode. We choose this such that we can achieve the waveform we are interested in.
-  pwmConfig_blu.compareRegister = BLU_CHANNEL; // The output register used for OC operation. The programmer does not choose this.
-  pwmConfig_blu.timerPeriod = PWM_PERIOD_CYLCLES; // The # of counter cycles in one PWM round (period of PWM in terms of counter cycle)
-  pwmConfig_blu.dutyCycle = BLU_COMPARE_CYCLES; // The OC value. This is the value that when the counter hits it, something happens to the waveform
+
+  // The source clock is the system clock (3MHz)
+  pwmConfig_blu.clockSource = TIMER_A_CLOCKSOURCE_SMCLK;
+
+  // The clock divider is 64
+  pwmConfig_blu.clockSourceDivider = TIMER_A_CLOCKSOURCE_DIVIDER_64;
+
+  // The # of counter cycles in one PWM round (period of PWM in terms of counter cycle)
+  pwmConfig_blu.timerPeriod = PWM_PERIOD_CYLCLES;
+
+  // The OC mode. We choose this such that we can achieve the waveform we are interested in.
+  pwmConfig_blu.compareOutputMode = TIMER_A_OUTPUTMODE_SET_RESET;
+
+  // The OC value. This is the value that when the counter hits it, something happens to the waveform
+  // Since we chose SET_RESET, at this count the GPIO is set and the LED is turned on
+  // This means the LED was off until hitting this count and therefore, it is the off-cycle count for us
+  pwmConfig_blu.dutyCycle = BLU_COMPARE_CYCLES;
+
+  // The output register used for OC operation.
+  // The programmer has to choose this such that it feeds to the right pin connected to the device needing the PWM.
+  pwmConfig_blu.compareRegister = BLU_CHANNEL;
 
   initPWM();
 
