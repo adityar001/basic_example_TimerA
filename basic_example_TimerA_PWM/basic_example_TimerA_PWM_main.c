@@ -7,7 +7,7 @@
 
 // Modify the BLOCKING macro below to activate/deactivate
 // the blocking code. Notice the difference in performance.
-#define BLOCKING    1
+#define BLOCKING    0
 #define BLOCK_COUNT 1000000
 
 // This function initializes all the peripherals except graphics
@@ -21,10 +21,10 @@ void initialize();
 #define TWO_SEC_COUNT  6000000
 
 // The length of the PWM period in terms of counter cycles
-#define PWM_PERIOD_CYLCLES ONE_SEC_COUNT
+#define PWM_PERIOD_CYLCLES TWO_SEC_COUNT
 
 // The duty cycle in fraction form (ratio between On cycles and Total number of cycles)
-#define DUTY_CYCLE_FRACTION 0.9
+#define DUTY_CYCLE_FRACTION 0.5
 
 // The length of on cycles and off cycles in terms of counter cycle
 #define ON_CYCLES     (DUTY_CYCLE_FRACTION * PWM_PERIOD_CYLCLES)
@@ -83,7 +83,7 @@ int main(void)
 
             pwmState = OFF;
 
-            toggle_BoosterpackLED_blue();
+            toggle_BoosterpackLED_blue(); // The PWM is driving the Blue LED
             startOffTimer();
         }
 
@@ -91,7 +91,7 @@ int main(void)
         {
             pwmState = ON;
 
-            toggle_BoosterpackLED_blue();
+            toggle_BoosterpackLED_blue(); //switching the blue LED on
             startOnTimer();
         }
     }
